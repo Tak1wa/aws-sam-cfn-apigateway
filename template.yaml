@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: ---
+Parameters:
+  ApiName:
+    Description: API Gateway Name
+    Type: String
+  StageName:
+    Description: API Gateway StageName
+    Type: String
+  HostedZoneId:
+    Description: Hosted Zone Id
+    Type: String
+  CustomDomainName:
+    Description: Custom Domain Name
+    Type: String
+  TrustStoreS3Uri:
+    Description: TrustStore S3 URI
+    Type: String
+    Default: s3://xxx/xxx.pem
+Resources:
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Ref ApiName
+      EndpointConfiguration: REGIONAL
+      OpenApiVersion: 3.0.1
+      StageName: !Ref StageName
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ./openapi.json
+      Domain: 
+        # BasePath: List
+        DomainName: !Ref CustomDomainName
+        CertificateArn: !Ref Certificate
+        EndpointConfiguration: REGIONAL
+        MutualTlsAuthentication: 
+          TruststoreUri: !Ref TrustStoreS3Uri
+        # OwnershipVerificationCertificateArn: !Ref Certificate
+        Route53: 
+          DistributionDomainName: !Ref CustomDomainName
+          HostedZoneId: !Ref HostedZoneId
+        SecurityPolicy: TLS_1_2
+      DisableExecuteApiEndpoint: true
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref CustomDomainName
+      DomainValidationOptions:
+        - DomainName: !Ref CustomDomainName
+          HostedZoneId: !Ref HostedZoneId
+      ValidationMethod: DNS
