@@ -53,3 +53,9 @@ Resources:
         - DomainName: !Ref CustomDomainName
           HostedZoneId: !Ref HostedZoneId
       ValidationMethod: DNS
+
+  Deployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties: 
+      RestApiId: !Ref Api
+      # StageName: String
