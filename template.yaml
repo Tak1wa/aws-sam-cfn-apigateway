@@ -25,7 +25,7 @@ Resources:
       Name: !Ref ApiName
       EndpointConfiguration: REGIONAL
       OpenApiVersion: 3.0.1
-      StageName: v1
+      StageName: iwasa-stage
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
@@ -54,8 +54,8 @@ Resources:
           HostedZoneId: !Ref HostedZoneId
       ValidationMethod: DNS
 
-  Deployment:
-    Type: AWS::ApiGateway::Deployment
-    Properties: 
-      RestApiId: !Ref Api
-      StageName: v1
+  # Deployment:
+  #   Type: AWS::ApiGateway::Deployment
+  #   Properties: 
+  #     RestApiId: !Ref Api
+  #     StageName: v1
