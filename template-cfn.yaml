@@ -52,7 +52,6 @@ Resources:
     Properties:
       Name: !Ref CustomDomainName
       Type: A
-      TTL: 300
       AliasTarget:
         DNSName: !GetAtt CustomDomain.RegionalDomainName
         HostedZoneId: !GetAtt CustomDomain.RegionalHostedZoneId
