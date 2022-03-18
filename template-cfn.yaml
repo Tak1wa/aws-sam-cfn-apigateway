@@ -24,7 +24,7 @@ Resources:
           Name: AWS::Include
           Parameters:
             Location: ./openapi.json
-      # DisableExecuteApiEndpoint: true
+      DisableExecuteApiEndpoint: true
       EndpointConfiguration: 
         Types: 
           - REGIONAL
