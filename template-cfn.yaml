@@ -23,8 +23,8 @@ Resources:
         Fn::Transform:
           Name: AWS::Include
           Parameters:
-            Location: ./openapi.json
-      DisableExecuteApiEndpoint: false
+            Location: ./openapi2.json
+      # DisableExecuteApiEndpoint: false
       EndpointConfiguration: 
         Types: 
           - REGIONAL
