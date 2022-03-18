@@ -47,6 +47,13 @@ Resources:
       RegionalCertificateArn: !Ref Certificate
       SecurityPolicy: TLS_1_2
 
+  BasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref CustomDomainName
+      RestApiId: !Ref Api
+      Stage: iwasa-stage
+
   DnsWebRecord:
     Type: AWS::Route53::RecordSet
     Properties:
