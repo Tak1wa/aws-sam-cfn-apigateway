@@ -23,8 +23,8 @@ Resources:
         Fn::Transform:
           Name: AWS::Include
           Parameters:
-            Location: ./openapi2.json
-      # DisableExecuteApiEndpoint: false
+            Location: ./openapi.json
+      # DisableExecuteApiEndpoint: true
       EndpointConfiguration: 
         Types: 
           - REGIONAL
@@ -33,7 +33,7 @@ Resources:
     Type: AWS::ApiGateway::Deployment
     Properties: 
       RestApiId: !Ref Api
-      StageName: iwasa-stage
+      StageName: iwasa-stage2
 
   CustomDomain:
     Type: AWS::ApiGateway::DomainName
@@ -52,7 +52,7 @@ Resources:
     Properties:
       DomainName: !Ref CustomDomainName
       RestApiId: !Ref Api
-      Stage: iwasa-stage
+      Stage: iwasa-stage2
 
   DnsWebRecord:
     Type: AWS::Route53::RecordSet

@@ -43,7 +43,7 @@ Resources:
           DistributionDomainName: !Ref CustomDomainName
           HostedZoneId: !Ref HostedZoneId
         SecurityPolicy: TLS_1_2
-      DisableExecuteApiEndpoint: false
+      DisableExecuteApiEndpoint: true
 
   Certificate:
     Type: AWS::CertificateManager::Certificate
