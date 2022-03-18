@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ---
+Parameters:
+  ApiName:
+    Description: API Gateway Name
+    Type: String
+  HostedZoneId:
+    Description: Hosted Zone Id
+    Type: String
+  CustomDomainName:
+    Description: Custom Domain Name
+    Type: String
+  TrustStoreS3Uri:
+    Description: TrustStore S3 URI
+    Type: String
+    Default: s3://xxx/xxx.pem
+Resources:
+  Api:
+    Type: AWS::ApiGateway::RestApi
+    Properties: 
+      Name: !Ref ApiName
+      Body: 
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ./openapi.json
+      DisableExecuteApiEndpoint: true
+      EndpointConfiguration: 
+        Types: 
+          - REGIONAL
+
+  Deployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties: 
+      RestApiId: !Ref Api
+      StageName: iwasa-stage
+
+  CustomDomain:
+    Type: AWS::ApiGateway::DomainName
+    Properties: 
+      DomainName: !Ref CustomDomainName
+      EndpointConfiguration: 
+        Types: 
+          - REGIONAL
+      MutualTlsAuthentication: 
+        TruststoreUri: !Ref TrustStoreS3Uri
+      RegionalCertificateArn: !Ref Certificate
+      SecurityPolicy: TLS_1_2
+
+  DnsWebRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Ref CustomDomainName
+      Type: A
+      TTL: 300
+      AliasTarget:
+        DNSName: !GetAtt CustomDomain.RegionalDomainName
+        HostedZoneId: !GetAtt CustomDomain.RegionalHostedZoneId
+      HostedZoneId: !Ref HostedZoneId
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref CustomDomainName
+      DomainValidationOptions:
+        - DomainName: !Ref CustomDomainName
+          HostedZoneId: !Ref HostedZoneId
+      ValidationMethod: DNS
