@@ -49,6 +49,7 @@ Resources:
 
   BasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
+    DependsOn: Deployment
     Properties:
       DomainName: !Ref CustomDomainName
       RestApiId: !Ref Api
