@@ -1,5 +1,12 @@
 {
     "openapi" : "3.0.1",
+    "servers": [
+      {
+        "x-amazon-apigateway-endpoint-configuration": {
+          "disableExecuteApiEndpoint": true
+        }
+      }
+    ],
     "paths" : {
       "/" : {
         "get" : {

@@ -32,18 +32,16 @@ Resources:
           Parameters:
             Location: ./openapi.json
       Domain: 
-        # BasePath: List
         DomainName: !Ref CustomDomainName
         CertificateArn: !Ref Certificate
         EndpointConfiguration: REGIONAL
         MutualTlsAuthentication: 
           TruststoreUri: !Ref TrustStoreS3Uri
-        # OwnershipVerificationCertificateArn: !Ref Certificate
         Route53: 
           DistributionDomainName: !Ref CustomDomainName
           HostedZoneId: !Ref HostedZoneId
         SecurityPolicy: TLS_1_2
-      DisableExecuteApiEndpoint: true
+      # DisableExecuteApiEndpoint: true
 
   Certificate:
     Type: AWS::CertificateManager::Certificate
